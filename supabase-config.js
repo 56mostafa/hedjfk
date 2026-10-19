@@ -2,7 +2,7 @@
 // لا تضع service_role أو secret key في هذا الملف.
 
 window.SUPABASE_CONFIG = {
-  url: "https://YOUR_PROJECT_REF.supabase.co",
-  publishableKey: "YOUR_SUPABASE_PUBLISHABLE_OR_ANON_KEY",
+  url: "https://kjbhkruqzgbunvmpuxce.supabase.co",
+  publishableKey: "kjbhkruqzgbunvmpuxce",
   storageBucket: "library-files"
 };
