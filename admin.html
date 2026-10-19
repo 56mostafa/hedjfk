@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#102b46">
+<title>لوحة التحكم | مكتبة سياسة واقتصاد السويس</title>
+<style>
+:root{--navy:#102b46;--blue:#1e527b;--gold:#d9ad62;--bg:#f4f7fb;--text:#203047;--muted:#718096;--line:#e2e8f0;--green:#18794e;--red:#b42318}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:Tahoma,Arial,sans-serif;line-height:1.7}button,input,select,textarea{font:inherit}button{cursor:pointer}
+.layout{display:grid;grid-template-columns:250px minmax(0,1fr);min-height:100vh}
+.sidebar{background:var(--navy);color:white;padding:22px 15px;display:flex;flex-direction:column;gap:18px}
+.brand{display:flex;align-items:center;gap:10px;padding:2px 6px 16px;border-bottom:1px solid #ffffff25}.logo{width:43px;height:43px;border:2px solid var(--gold);border-radius:12px;display:grid;place-items:center;font-size:23px;flex-shrink:0}.brand h1{font-size:15px;line-height:1.6;margin:0}.brand p{font-size:11px;color:#cbd5e1;margin:0}
+.nav{display:grid;gap:7px}.nav button{width:100%;display:flex;gap:10px;align-items:center;text-align:right;padding:11px 13px;border:1px solid transparent;border-radius:10px;background:transparent;color:#dbe7f3;font-size:13px}.nav button.active,.nav button:hover{background:#ffffff12;border-color:#ffffff25;color:white}.nav .ico{width:22px;text-align:center;font-size:17px}
+.sidebar-note{margin-top:auto;border:1px solid #ffffff2c;border-radius:12px;padding:12px;color:#dbe7f3;font-size:11px}
+.main{min-width:0;padding:26px clamp(14px,3vw,34px) 40px}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:22px}.topbar h2{margin:0;color:var(--navy);font-size:clamp(21px,3vw,28px)}.topbar p{margin:3px 0 0;font-size:12px;color:var(--muted)}
+.actions{display:flex;gap:8px;flex-wrap:wrap}
+.btn{border:1px solid transparent;border-radius:9px;padding:10px 14px;background:var(--navy);color:white;font-size:12px;font-weight:bold}.btn:hover{filter:brightness(1.08)}.btn.secondary{background:white;border-color:var(--line);color:var(--text)}.btn.gold{background:var(--gold);color:var(--navy)}.btn.danger{background:#fff2f0;border-color:#ffd4ce;color:var(--red)}.btn.small{padding:7px 10px;font-size:11px}
+.banner{background:#fff8e9;border:1px solid #f1ddb4;border-right:4px solid var(--gold);border-radius:11px;padding:12px 15px;color:#684f24;font-size:12px;margin-bottom:19px}
+.view{display:none}.view.active{display:block}
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px;margin-bottom:19px}.stat,.card{background:white;border:1px solid var(--line);border-radius:14px;box-shadow:0 4px 15px #102b4606}.stat{padding:17px}.stat .label{font-size:12px;color:var(--muted)}.stat .num{font-size:29px;font-weight:bold;color:var(--navy);margin-top:5px}.stat .hint{font-size:11px;color:var(--muted)}
+.card{padding:18px;margin-bottom:17px}.card h3{font-size:17px;color:var(--navy);margin:0 0 5px}.card-intro{font-size:12px;color:var(--muted);margin:0 0 15px}
+.quick-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.quick{padding:15px;border:1px solid var(--line);border-radius:12px;background:#fbfcfe;text-align:right}.quick span{display:block;font-size:23px}.quick strong{display:block;font-size:13px;margin-top:8px}.quick small{color:var(--muted);font-size:11px}
+.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}.field{display:flex;flex-direction:column;gap:5px;min-width:0}.field.full{grid-column:1/-1}.field label{font-weight:bold;font-size:12px}.field input,.field select,.field textarea{width:100%;border:1px solid #d7e0eb;border-radius:9px;padding:10px 11px;background:white;color:var(--text);outline:none;min-width:0}.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--blue);box-shadow:0 0 0 3px #1e527b15}.field textarea{min-height:90px;resize:vertical}.field .help{font-size:10px;color:var(--muted)}
+.form-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.list{display:grid;gap:9px}.item{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px;border:1px solid var(--line);border-radius:11px;background:white}.item-main{display:flex;align-items:center;gap:11px;min-width:0}.item-icon{width:42px;height:42px;display:grid;place-items:center;border-radius:10px;background:#eaf1f8;font-size:22px;flex-shrink:0}.item h4{font-size:13px;margin:0;color:var(--navy);overflow-wrap:anywhere}.item p{font-size:11px;color:var(--muted);margin:2px 0 0;overflow-wrap:anywhere}.item-actions{display:flex;gap:6px;flex-shrink:0}
+.empty{padding:22px;text-align:center;color:var(--muted);background:#fbfcfe;border:1px dashed #cdd7e4;border-radius:11px;font-size:12px}
+.status{font-size:12px;margin-top:10px;min-height:20px;color:var(--green)}.status.error{color:var(--red)}
+.settings-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}
+.mobile-menu{display:none}
+@media(max-width:850px){.layout{grid-template-columns:1fr}.sidebar{padding:13px;gap:11px}.brand{padding:0 3px 11px}.nav{display:flex;overflow:auto;padding-bottom:2px}.nav button{white-space:nowrap;width:auto;flex-shrink:0}.sidebar-note{display:none}.main{padding-top:18px}.stats{gap:9px}.stat{padding:13px}.stat .num{font-size:24px}}
+@media(max-width:560px){.stats{grid-template-columns:repeat(3,minmax(0,1fr))}.stat .label{font-size:10px}.stat .num{font-size:21px}.quick-grid{grid-template-columns:1fr}.form-grid,.settings-grid{grid-template-columns:1fr}.field.full{grid-column:auto}.item{align-items:flex-start;flex-direction:column}.item-actions{width:100%;justify-content:flex-end}.topbar{align-items:flex-start}.actions{width:100%}.actions .btn{flex:1}}
+</style>
+</head>
+<body>
+<div class="layout">
+<aside class="sidebar">
+ <div class="brand"><div class="logo">📚</div><div><h1>لوحة تحكم المكتبة</h1><p>سياسة واقتصاد · جامعة السويس</p></div></div>
+ <nav class="nav" id="sideNav">
+  <button class="active" data-view="overview"><span class="ico">▦</span>نظرة عامة</button>
+  <button data-view="subjects"><span class="ico">📚</span>مواد الفرقة الأولى</button>
+  <button data-view="books"><span class="ico">🎓</span>كتب الدراسات العليا</button>
+  <button data-view="settings"><span class="ico">⚙️</span>بيانات الموقع</button>
+  <button data-view="backup"><span class="ico">💾</span>حفظ ونشر البيانات</button>
+ </nav>
+ <div class="sidebar-note">تنبيه: التعديلات تُحفظ على هذا المتصفح فقط. لتظهر للزوار، صدّر ملف البيانات وارفعه إلى مستودع GitHub.</div>
+</aside>
+<main class="main">
+ <div class="topbar"><div><h2 id="pageTitle">نظرة عامة</h2><p>إدارة محتوى مكتبة سياسة واقتصاد السويس</p></div><div class="actions"><button class="btn secondary" id="previewBtn">فتح الموقع ↗</button><button class="btn gold" id="exportTop">تصدير البيانات</button></div></div>
+ <div class="banner"><strong>طريقة العمل:</strong> أضف المواد والكتب هنا، ثم اضغط «تصدير ملف البيانات». ارفع الملف الناتج باسم <b>library-data.json</b> إلى جذر مستودع GitHub بجانب <b>index.html</b>، ثم احفظ التغييرات في GitHub.</div>
+
+ <section class="view active" id="view-overview">
+  <div class="stats"><div class="stat"><div class="label">مواد الفرقة الأولى</div><div class="num" id="countSubjects">0</div><div class="hint">المواد المسجلة في اللوحة</div></div><div class="stat"><div class="label">كتب الدراسات العليا</div><div class="num" id="countBooks">0</div><div class="hint">الكتب والمراجع المضافة</div></div><div class="stat"><div class="label">أقسام الدراسات العليا</div><div class="num">4</div><div class="hint">سياسة/اقتصاد · ماجستير/دكتوراه</div></div></div>
+  <div class="card"><h3>اختصارات سريعة</h3><p class="card-intro">اختار القسم الذي تريد إدارته.</p><div class="quick-grid">
+   <button class="quick" data-goto="subjects"><span>📘</span><strong>إدارة المواد</strong><small>إضافة اسم المادة ورابط ملفها</small></button>
+   <button class="quick" data-goto="books"><span>🎓</span><strong>إدارة الكتب</strong><small>توزيع الكتب حسب التخصص والدرجة</small></button>
+   <button class="quick" data-goto="settings"><span>⚙️</span><strong>بيانات الموقع</strong><small>تعديل العنوان والوصف وبيانات الإشراف</small></button>
+  </div></div>
+  <div class="card"><h3>الخطوة الأخيرة لنشر التعديلات</h3><p class="card-intro">لوحة التحكم لا تكتب مباشرة داخل GitHub. صدّر ملف البيانات ثم ارفعه إلى المستودع مكان النسخة القديمة.</p><button class="btn gold" id="exportOverview">تنزيل library-data.json</button></div>
+ </section>
+
+ <section class="view" id="view-subjects">
+  <div class="card"><h3 id="subjectFormTitle">إضافة مادة جديدة</h3><p class="card-intro">أدخل اسم المادة ومسار ملف PDF. لا ترفع ملف PDF هنا؛ ارفع الملف أولًا إلى مجلد files في GitHub.</p>
+   <form id="subjectForm"><input type="hidden" id="subjectId"><div class="form-grid">
+    <div class="field"><label for="subjectTitle">اسم المادة *</label><input id="subjectTitle" required placeholder="مثال: مبادئ الاقتصاد"></div>
+    <div class="field"><label for="subjectIcon">رمز المادة</label><input id="subjectIcon" maxlength="8" value="📘" placeholder="📘"></div>
+    <div class="field full"><label for="subjectFile">مسار ملف PDF أو رابطه (اختياري)</label><input id="subjectFile" placeholder="يُملأ تلقائيًا عند اختيار ملف من الجهاز"><span class="help">يمكنك كتابة رابط مباشر، أو اختيار ملف PDF من الجهاز في الحقل التالي.</span></div>
+    <div class="field full"><label for="subjectDeviceFile">اختيار ملف المادة من الجهاز</label><input id="subjectDeviceFile" type="file" accept=".pdf,application/pdf"><span class="help">اختر ملف PDF من الكمبيوتر أو الهاتف. سيتم تضمينه في حزمة النشر عند التصدير.</span></div>
+   </div><div class="form-actions"><button class="btn" type="submit" id="saveSubjectBtn">إضافة المادة</button><button class="btn secondary" type="button" id="cancelSubjectEdit" hidden>إلغاء التعديل</button></div><div class="status" id="subjectStatus" aria-live="polite"></div></form>
+  </div>
+  <div class="card"><h3>المواد المسجلة</h3><p class="card-intro">يمكنك تعديل أي مادة أو حذفها.</p><div class="list" id="subjectList"></div></div>
+ </section>
+
+ <section class="view" id="view-books">
+  <div class="card"><h3 id="bookFormTitle">إضافة كتاب أو مرجع</h3><p class="card-intro">أضف الكتاب وحدد التخصص والدرجة العلمية ليظهر تحت القسم الصحيح في الموقع.</p>
+   <form id="bookForm"><input type="hidden" id="bookId"><div class="form-grid">
+    <div class="field"><label for="bookTitle">عنوان الكتاب *</label><input id="bookTitle" required placeholder="عنوان الكتاب أو المرجع"></div>
+    <div class="field"><label for="bookAuthor">المؤلف</label><input id="bookAuthor" placeholder="اسم المؤلف"></div>
+    <div class="field"><label for="bookField">التخصص</label><select id="bookField"><option value="politics">العلوم السياسية</option><option value="economics">الاقتصاد</option></select></div>
+    <div class="field"><label for="bookDegree">الدرجة العلمية</label><select id="bookDegree"><option value="master">الماجستير</option><option value="phd">الدكتوراه</option></select></div>
+    <div class="field full"><label for="bookDescription">وصف مختصر</label><textarea id="bookDescription" placeholder="معلومات مختصرة عن المرجع (اختياري)"></textarea></div>
+    <div class="field full"><label for="bookUrl">رابط الكتاب أو مسار ملفه (اختياري)</label><input id="bookUrl" placeholder="يُملأ تلقائيًا عند اختيار ملف من الجهاز"><span class="help">يمكنك كتابة رابط مباشر، أو اختيار ملف PDF من الجهاز في الحقل التالي.</span></div>
+    <div class="field full"><label for="bookDeviceFile">اختيار ملف الكتاب من الجهاز</label><input id="bookDeviceFile" type="file" accept=".pdf,application/pdf"><span class="help">اختر ملف PDF من الكمبيوتر أو الهاتف. سيتم تضمينه في حزمة النشر عند التصدير.</span></div>
+   </div><div class="form-actions"><button class="btn" type="submit" id="saveBookBtn">إضافة الكتاب</button><button class="btn secondary" type="button" id="cancelBookEdit" hidden>إلغاء التعديل</button></div><div class="status" id="bookStatus" aria-live="polite"></div></form>
+  </div>
+  <div class="card"><h3>الكتب المسجلة</h3><p class="card-intro">تظهر الكتب في الموقع وفق التخصص والدرجة المختارين.</p><div class="list" id="bookList"></div></div>
+ </section>
+
+ <section class="view" id="view-settings">
+  <div class="card"><h3>تعديل بيانات الموقع</h3><p class="card-intro">التغييرات تظهر في ملف البيانات بعد التصدير ورفعه إلى GitHub.</p>
+   <form id="settingsForm"><div class="settings-grid">
+    <div class="field"><label for="settingSiteName">اسم المكتبة</label><input id="settingSiteName"></div>
+    <div class="field"><label for="settingUniversityLine">السطر التعريفي أعلى الموقع</label><input id="settingUniversityLine"></div>
+    <div class="field"><label for="settingEyebrow">العبارة الصغيرة أعلى العنوان</label><input id="settingEyebrow"></div>
+    <div class="field"><label for="settingHeroTitle">العنوان الرئيسي</label><input id="settingHeroTitle"></div>
+    <div class="field full"><label for="settingHeroDescription">وصف الصفحة الرئيسية</label><textarea id="settingHeroDescription"></textarea></div>
+    <div class="field full"><label for="settingAboutText">نص «عن المكتبة»</label><textarea id="settingAboutText"></textarea></div>
+    <div class="field"><label for="settingCreator">إعداد وتطوير الموقع</label><input id="settingCreator"></div>
+    <div class="field"><label for="settingSupervisor">اسم المشرف</label><input id="settingSupervisor"></div>
+   </div><div class="form-actions"><button class="btn" type="submit">حفظ بيانات الموقع</button><button class="btn secondary" type="button" id="resetSettings">استعادة البيانات الافتراضية</button></div><div class="status" id="settingsStatus" aria-live="polite"></div></form>
+  </div>
+ </section>
+
+ <section class="view" id="view-backup">
+  <div class="card"><h3>تصدير واستيراد البيانات</h3><p class="card-intro">استخدم التصدير للنشر على الموقع أو لعمل نسخة احتياطية. استخدم الاستيراد لاستعادة ملف سبق تصديره.</p>
+   <div class="form-actions"><button class="btn gold" id="exportMain">تصدير library-data.json</button><button class="btn" id="exportPackage" type="button">تنزيل حزمة البيانات وملفات PDF</button><label class="btn secondary" for="importFile">استيراد ملف بيانات</label><input type="file" id="importFile" accept=".json,application/json" hidden></div><div class="status" id="backupStatus" aria-live="polite"></div>
+  </div>
+  <div class="card"><h3>خطوات نشر التحديث على GitHub</h3>
+   <ol style="padding-right:22px;font-size:13px;line-height:2.2">
+    <li>اضغط «تصدير library-data.json» واحفظ الملف على جهازك.</li>
+    <li>افتح مستودع GitHub الخاص بالمكتبة.</li>
+    <li>ارفع الملف إلى المجلد الرئيسي بجوار <b>index.html</b>، واختر استبدال الملف القديم إن طُلب منك ذلك.</li>
+    <li>اضغط <b>Commit changes</b> وانتظر حتى يتم تحديث الموقع.</li>
+   </ol>
+  </div>
+  <div class="card"><h3>استقبال الملفات من جهازك</h3><p class="card-intro">يمكنك اختيار ملفات PDF مباشرة من الكمبيوتر أو الهاتف أثناء إضافة مادة أو كتاب. بعد ذلك نزّل «حزمة البيانات وملفات PDF»، وفك ضغطها على جهازك، ثم ارفع <b>library-data.json</b> ومجلد <b>files</b> الناتجين إلى GitHub. لا يرفع الموقع الملفات إلى GitHub من تلقاء نفسه لأن الاستضافة الحالية ثابتة ولا تحتوي على خادم لرفع الملفات.</p></div>
+ </section>
+</main></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script>
+const DEFAULT_DATA = {"settings": {"siteName": "مكتبة سياسة واقتصاد السويس", "universityLine": "كلية السياسة والاقتصاد · الفرقة الأولى", "eyebrow": "جامعة السويس · كلية السياسة والاقتصاد", "heroTitle": "بوابتك لعالم السياسة والاقتصاد", "heroDescription": "موادك الدراسية ومراجعك الأكاديمية، منظمة لتسهيل رحلة التعلم والمعرفة.", "aboutText": "مكتبة إلكترونية مخصصة لطلاب الفرقة الأولى بكلية السياسة والاقتصاد جامعة السويس، تجمع المواد الدراسية والمراجع الأكاديمية في مكان واحد، وتساعد الطلاب على الوصول إلى المحتوى العلمي بسهولة وتنظيم.", "creator": "مصطفى عادل محمد", "supervisor": "أ.د. مصطفى أحمد", "yearLabel": "الفرقة الأولى"}, "subjects": [{"id": "sub-1", "title": "مبادئ الاقتصاد", "icon": "📈", "file": ""}, {"id": "sub-2", "title": "مدخل إلى العلوم السلوكية", "icon": "🧠", "file": ""}, {"id": "sub-3", "title": "مبادئ الرياضيات", "icon": "➗", "file": ""}, {"id": "sub-4", "title": "مدخل إلى الدراسة القانونية", "icon": "⚖️", "file": ""}, {"id": "sub-5", "title": "حقوق الإنسان", "icon": "🕊️", "file": ""}, {"id": "sub-6", "title": "مناهج البحث في العلوم السياسية", "icon": "🔎", "file": ""}], "books": []};
+const KEY="suezLibraryAdminData";
+let data=structuredClone(DEFAULT_DATA);
+let selectedSubjectFile = null;
+let selectedBookFile = null;
+let pendingUploads = new Map();
+const UPLOAD_DB_NAME = "suezLibraryUploadDB";
+const UPLOAD_STORE_NAME = "files";
+const $=id=>document.getElementById(id);
+
+function openUploadDB(){
+ return new Promise((resolve,reject)=>{
+  if(!("indexedDB" in window)){reject(new Error("IndexedDB غير متاح"));return;}
+  const request=indexedDB.open(UPLOAD_DB_NAME,1);
+  request.onupgradeneeded=()=>{const db=request.result;if(!db.objectStoreNames.contains(UPLOAD_STORE_NAME))db.createObjectStore(UPLOAD_STORE_NAME,{keyPath:"path"});};
+  request.onsuccess=()=>resolve(request.result);
+  request.onerror=()=>reject(request.error||new Error("تعذر فتح مخزن الملفات"));
+ });
+}
+async function rememberUploadedFile(path,file){
+ pendingUploads.set(path,file);
+ try{
+  const db=await openUploadDB();
+  await new Promise((resolve,reject)=>{
+   const tx=db.transaction(UPLOAD_STORE_NAME,"readwrite");
+   tx.objectStore(UPLOAD_STORE_NAME).put({path,name:file.name||path.split("/").pop(),blob:file});
+   tx.oncomplete=resolve;tx.onerror=()=>reject(tx.error);tx.onabort=()=>reject(tx.error);
+  });
+  db.close();
+ }catch(err){
+  // The current session can still export the file even if browser storage is unavailable.
+ }
+}
+async function getRememberedUploads(){
+ try{
+  const db=await openUploadDB();
+  const records=await new Promise((resolve,reject)=>{
+   const tx=db.transaction(UPLOAD_STORE_NAME,"readonly");
+   const req=tx.objectStore(UPLOAD_STORE_NAME).getAll();
+   req.onsuccess=()=>resolve(req.result||[]);req.onerror=()=>reject(req.error);
+  });
+  db.close();
+  records.forEach(record=>{if(record.blob)pendingUploads.set(record.path,record.blob);});
+ }catch(err){}
+ return pendingUploads;
+}
+function safeFilename(name){
+ const last=String(name||"document.pdf").split(/[\\/]/).pop();
+ const cleaned=last.replace(/[^\p{L}\p{N}._-]+/gu,"-").replace(/^-+|-+$/g,"");
+ return cleaned||"document.pdf";
+}
+function makeUploadPath(prefix,file){
+ return "files/"+prefix+"-"+Date.now().toString(36)+"-"+Math.random().toString(36).slice(2,6)+"-"+safeFilename(file.name);
+}
+const fieldNames={politics:"العلوم السياسية",economics:"الاقتصاد"};
+const degreeNames={master:"الماجستير",phd:"الدكتوراه"};
+function uuid(){return "item-"+Date.now().toString(36)+"-"+Math.random().toString(36).slice(2,7);}
+function persist(){try{localStorage.setItem(KEY,JSON.stringify(data));}catch(e){}renderLists();renderStats();}
+function showStatus(id,message,error=false){const el=$(id);el.textContent=message;el.classList.toggle("error",error);}
+function view(name){document.querySelectorAll(".view").forEach(v=>v.classList.toggle("active",v.id==="view-"+name));document.querySelectorAll("#sideNav button").forEach(b=>b.classList.toggle("active",b.dataset.view===name));const titles={overview:"نظرة عامة",subjects:"مواد الفرقة الأولى",books:"كتب الدراسات العليا",settings:"بيانات الموقع",backup:"حفظ ونشر البيانات"};$("pageTitle").textContent=titles[name]||"لوحة التحكم";window.scrollTo({top:0,behavior:"smooth"});}
+document.querySelectorAll("#sideNav [data-view], [data-goto]").forEach(b=>b.addEventListener("click",()=>view(b.dataset.view||b.dataset.goto)));
+function renderStats(){$("countSubjects").textContent=data.subjects.length;$("countBooks").textContent=data.books.length;}
+function element(tag,cls,text){const e=document.createElement(tag);if(cls)e.className=cls;if(text!==undefined)e.textContent=text;return e;}
+function renderLists(){
+ const sl=$("subjectList");sl.replaceChildren();
+ if(!data.subjects.length)sl.append(element("div","empty","لا توجد مواد مضافة حتى الآن."));
+ data.subjects.forEach(s=>{
+  const row=element("div","item"),main=element("div","item-main"),ico=element("div","item-icon",s.icon||"📘"),txt=element("div",""),title=element("h4","",s.title),desc=element("p","",s.file||"لم تتم إضافة ملف لهذه المادة");
+  txt.append(title,desc);main.append(ico,txt);const actions=element("div","item-actions"),edit=element("button","btn secondary small","تعديل"),del=element("button","btn danger small","حذف");
+  edit.type=del.type="button";edit.addEventListener("click",()=>editSubject(s.id));del.addEventListener("click",()=>deleteSubject(s.id));actions.append(edit,del);row.append(main,actions);sl.append(row);
+ });
+ const bl=$("bookList");bl.replaceChildren();
+ if(!data.books.length)bl.append(element("div","empty","لا توجد كتب مضافة حتى الآن."));
+ data.books.forEach(b=>{
+  const row=element("div","item"),main=element("div","item-main"),ico=element("div","item-icon","📚"),txt=element("div",""),title=element("h4","",b.title),desc=element("p","",`${fieldNames[b.field]||b.field} · ${degreeNames[b.degree]||b.degree}${b.author?" · "+b.author:""}`);
+  txt.append(title,desc);main.append(ico,txt);const actions=element("div","item-actions"),edit=element("button","btn secondary small","تعديل"),del=element("button","btn danger small","حذف");
+  edit.type=del.type="button";edit.addEventListener("click",()=>editBook(b.id));del.addEventListener("click",()=>deleteBook(b.id));actions.append(edit,del);row.append(main,actions);bl.append(row);
+ });
+}
+function resetSubjectForm(){ $("subjectForm").reset();selectedSubjectFile=null;$("subjectId").value="";$("subjectIcon").value="📘";$("subjectFormTitle").textContent="إضافة مادة جديدة";$("saveSubjectBtn").textContent="إضافة المادة";$("cancelSubjectEdit").hidden=true;showStatus("subjectStatus","");}
+function editSubject(id){const s=data.subjects.find(x=>x.id===id);if(!s)return;selectedSubjectFile=null;$("subjectDeviceFile").value="";$("subjectId").value=s.id;$("subjectTitle").value=s.title;$("subjectIcon").value=s.icon||"📘";$("subjectFile").value=s.file||"";$("subjectFormTitle").textContent="تعديل المادة";$("saveSubjectBtn").textContent="حفظ التعديل";$("cancelSubjectEdit").hidden=false;view("subjects");$("subjectTitle").focus();}
+function deleteSubject(id){const s=data.subjects.find(x=>x.id===id);if(!s||!confirm(`هل تريد حذف مادة «${s.title}»؟`))return;data.subjects=data.subjects.filter(x=>x.id!==id);persist();showStatus("subjectStatus","تم حذف المادة. صدّر البيانات لنشر التغيير.");}
+$("subjectDeviceFile").addEventListener("change",()=>{const file=$("subjectDeviceFile").files[0];selectedSubjectFile=file||null;if(file){if(file.type!=="application/pdf"&&!file.name.toLowerCase().endsWith(".pdf")){selectedSubjectFile=null;$("subjectDeviceFile").value="";showStatus("subjectStatus","اختر ملف PDF فقط.",true);return;}showStatus("subjectStatus",`تم اختيار الملف: ${file.name}. اضغط «إضافة المادة» لحفظه.`);}});
+$("subjectForm").addEventListener("submit",async e=>{e.preventDefault();const id=$("subjectId").value;let filePath=$("subjectFile").value.trim();const chosen=selectedSubjectFile;if(chosen){filePath=makeUploadPath("subject",chosen);await rememberUploadedFile(filePath,chosen);}const obj={id:id||uuid(),title:$("subjectTitle").value.trim(),icon:$("subjectIcon").value.trim()||"📘",file:filePath};const message=chosen?"تم حفظ المادة والملف من جهازك. نزّل حزمة النشر لتضمين ملف PDF.":(id?"تم تحديث المادة. صدّر البيانات لنشر التغيير.":"تمت إضافة المادة. صدّر البيانات لنشر التغيير.");if(id){data.subjects=data.subjects.map(s=>s.id===id?obj:s);}else{data.subjects.push(obj);}persist();resetSubjectForm();showStatus("subjectStatus",message);});
+$("cancelSubjectEdit").addEventListener("click",resetSubjectForm);
+function resetBookForm(){$("bookForm").reset();selectedBookFile=null;$("bookId").value="";$("bookField").value="politics";$("bookDegree").value="master";$("bookFormTitle").textContent="إضافة كتاب أو مرجع";$("saveBookBtn").textContent="إضافة الكتاب";$("cancelBookEdit").hidden=true;showStatus("bookStatus","");}
+function editBook(id){const b=data.books.find(x=>x.id===id);if(!b)return;selectedBookFile=null;$("bookDeviceFile").value="";$("bookId").value=b.id;$("bookTitle").value=b.title||"";$("bookAuthor").value=b.author||"";$("bookField").value=b.field||"politics";$("bookDegree").value=b.degree||"master";$("bookDescription").value=b.description||"";$("bookUrl").value=b.url||"";$("bookFormTitle").textContent="تعديل الكتاب أو المرجع";$("saveBookBtn").textContent="حفظ التعديل";$("cancelBookEdit").hidden=false;view("books");$("bookTitle").focus();}
+function deleteBook(id){const b=data.books.find(x=>x.id===id);if(!b||!confirm(`هل تريد حذف الكتاب «${b.title}»؟`))return;data.books=data.books.filter(x=>x.id!==id);persist();showStatus("bookStatus","تم حذف الكتاب. صدّر البيانات لنشر التغيير.");}
+$("bookDeviceFile").addEventListener("change",()=>{const file=$("bookDeviceFile").files[0];selectedBookFile=file||null;if(file){if(file.type!=="application/pdf"&&!file.name.toLowerCase().endsWith(".pdf")){selectedBookFile=null;$("bookDeviceFile").value="";showStatus("bookStatus","اختر ملف PDF فقط.",true);return;}showStatus("bookStatus",`تم اختيار الملف: ${file.name}. اضغط «إضافة الكتاب» لحفظه.`);}});
+$("bookForm").addEventListener("submit",async e=>{e.preventDefault();const id=$("bookId").value;let url=$("bookUrl").value.trim();const chosen=selectedBookFile;if(chosen){url=makeUploadPath("book",chosen);await rememberUploadedFile(url,chosen);}const obj={id:id||uuid(),title:$("bookTitle").value.trim(),author:$("bookAuthor").value.trim(),field:$("bookField").value,degree:$("bookDegree").value,description:$("bookDescription").value.trim(),url};const message=chosen?"تم حفظ الكتاب والملف من جهازك. نزّل حزمة النشر لتضمين ملف PDF.":(id?"تم تحديث بيانات الكتاب. صدّر البيانات للنشر.":"تمت إضافة الكتاب. صدّر البيانات للنشر.");if(id){data.books=data.books.map(b=>b.id===id?obj:b);}else{data.books.push(obj);}persist();resetBookForm();showStatus("bookStatus",message);});
+$("cancelBookEdit").addEventListener("click",resetBookForm);
+function fillSettings(){const s=data.settings||{};$("settingSiteName").value=s.siteName||"";$("settingUniversityLine").value=s.universityLine||"";$("settingEyebrow").value=s.eyebrow||"";$("settingHeroTitle").value=s.heroTitle||"";$("settingHeroDescription").value=s.heroDescription||"";$("settingAboutText").value=s.aboutText||"";$("settingCreator").value=s.creator||"";$("settingSupervisor").value=s.supervisor||"";}
+$("settingsForm").addEventListener("submit",e=>{e.preventDefault();data.settings={...data.settings,siteName:$("settingSiteName").value.trim(),universityLine:$("settingUniversityLine").value.trim(),eyebrow:$("settingEyebrow").value.trim(),heroTitle:$("settingHeroTitle").value.trim(),heroDescription:$("settingHeroDescription").value.trim(),aboutText:$("settingAboutText").value.trim(),creator:$("settingCreator").value.trim(),supervisor:$("settingSupervisor").value.trim()};persist();showStatus("settingsStatus","تم حفظ البيانات في هذا المتصفح. صدّر ملف البيانات لنشرها على الموقع.");});
+$("resetSettings").addEventListener("click",()=>{if(!confirm("هل تريد استعادة بيانات الموقع الافتراضية؟ لن تتغير المواد والكتب."))return;data.settings=structuredClone(DEFAULT_DATA.settings);fillSettings();persist();showStatus("settingsStatus","تمت استعادة البيانات الافتراضية.");});
+function downloadBlob(blob,filename){const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download=filename;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1500);}
+function exportData(){const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json;charset=utf-8"});downloadBlob(blob,"library-data.json");showStatus("backupStatus","تم تنزيل library-data.json. ارفعه إلى GitHub بجوار index.html.");}
+async function exportPackage(){
+ try{
+  if(typeof JSZip==="undefined"){showStatus("backupStatus","تعذر تحميل أداة ضغط الملفات. تأكد من اتصال الإنترنت ثم أعد المحاولة.",true);return;}
+  const zip=new JSZip();
+  zip.file("library-data.json",JSON.stringify(data,null,2));
+  const uploads=await getRememberedUploads();
+  let count=0;
+  for(const [path,file] of uploads.entries()){zip.file(path,file);count++;}
+  zip.file("تعليمات-النشر.txt","1) فك ضغط هذه الحزمة على جهازك.\n2) ارفع library-data.json إلى جذر مستودع GitHub بجوار index.html.\n3) ارفع الملفات الموجودة داخل مجلد files إلى مجلد files في المستودع.\n4) اضغط Commit changes وانتظر تحديث GitHub Pages.\n\nملاحظة: لوحة التحكم لا ترفع إلى GitHub مباشرة؛ الحزمة تجمع البيانات وملفات PDF التي اخترتها من جهازك.");
+  const blob=await zip.generateAsync({type:"blob"});
+  downloadBlob(blob,"مكتبة-سياسة-واقتصاد-حزمة-النشر.zip");
+  showStatus("backupStatus",`تم تجهيز حزمة النشر وبداخلها ملف البيانات و${count} ملف PDF مرفق. فك ضغطها وارفع محتوياتها إلى GitHub.`);
+ }catch(err){showStatus("backupStatus","حدث خطأ أثناء تجهيز الحزمة. حاول مرة أخرى.",true);}
+}
+["exportTop","exportOverview","exportMain"].forEach(id=>$(id).addEventListener("click",exportData));
+$("exportPackage").addEventListener("click",exportPackage);
+$("importFile").addEventListener("change",async e=>{const f=e.target.files[0];if(!f)return;try{const parsed=JSON.parse(await f.text());if(!parsed.settings||!Array.isArray(parsed.subjects)||!Array.isArray(parsed.books))throw new Error("تنسيق الملف غير صحيح.");data=parsed;localStorage.setItem(KEY,JSON.stringify(data));fillSettings();renderLists();renderStats();showStatus("backupStatus","تم استيراد البيانات بنجاح وحفظها في هذا المتصفح.");}catch(err){showStatus("backupStatus","تعذر استيراد الملف. تأكد أنه library-data.json صالح.",true);}e.target.value="";});
+$("previewBtn").addEventListener("click",()=>window.open("./index.html","_blank"));
+async function init(){try{const local=localStorage.getItem(KEY);if(local)data=JSON.parse(local);else{const res=await fetch("./library-data.json",{cache:"no-store"});if(res.ok)data=await res.json();}}catch(e){data=structuredClone(DEFAULT_DATA);}await getRememberedUploads();fillSettings();renderLists();renderStats();}
+init();
+</script>
+</body></html>
