@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#102b46">
+  <meta name="description" content="مكتبة كلية السياسة والاقتصاد جامعة السويس للكتب والمراجع الأكاديمية">
+  <title>مكتبة سياسة واقتصاد السويس</title>
+  <style>
+    :root {
+      --navy:#102b46; --blue:#1e527b; --gold:#d9ad62;
+      --bg:#f4f7fb; --text:#203047; --muted:#718096;
+      --white:#fff; --border:#e2e8f0;
+    }
+    * { box-sizing:border-box; margin:0; padding:0; }
+    html { scroll-behavior:smooth; scroll-padding-top:20px; }
+    body {
+      font-family:Tahoma,Arial,sans-serif; background:var(--bg);
+      color:var(--text); line-height:1.8; overflow-wrap:anywhere;
+      -webkit-text-size-adjust:100%;
+    }
+    button,input { font:inherit; }
+    button { cursor:pointer; touch-action:manipulation; }
+    a { text-decoration:none; }
+    [hidden] { display:none !important; }
+    .container { width:min(1100px, calc(100% - 32px)); margin-inline:auto; }
+    header {
+      background:var(--navy); color:#fff; padding:14px 0;
+      border-bottom:3px solid var(--gold);
+    }
+    .navbar { display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap; }
+    .brand { display:flex; align-items:center; gap:12px; min-width:0; }
+    .logo {
+      width:46px; height:46px; flex:0 0 46px; display:grid; place-items:center;
+      border:2px solid var(--gold); border-radius:13px; font-size:25px;
+    }
+    .brand h1 { font-size:clamp(15px,2vw,19px); line-height:1.5; }
+    .brand p { font-size:12px; color:#d9e4ef; }
+    .nav-links { display:flex; flex-wrap:wrap; gap:8px; }
+    .nav-links a {
+      display:inline-block; color:white; border:1px solid #ffffff40;
+      padding:7px 12px; border-radius:8px; font-size:13px;
+    }
+    .nav-links a:hover,.nav-links a:focus-visible { border-color:var(--gold); color:#f2d8a8; }
+    .hero {
+      background:linear-gradient(135deg,#102b46,#1e527b);
+      color:white; text-align:center; padding:clamp(38px,7vw,65px) 0;
+    }
+    .tag {
+      display:inline-block; color:#f2d8a8; border:1px solid #d9ad6270;
+      border-radius:25px; padding:5px 14px; font-size:13px; margin-bottom:15px;
+    }
+    .hero h2 { font-size:clamp(27px,5vw,43px); line-height:1.5; margin-bottom:10px; }
+    .hero h2 span { color:var(--gold); }
+    .hero p { max-width:680px; margin:0 auto 22px; color:#d9e4ef; font-size:15px; }
+    .search {
+      display:flex; gap:8px; max-width:640px; margin:auto; padding:6px;
+      background:white; border-radius:12px; box-shadow:0 8px 24px #07162930;
+    }
+    .search input {
+      flex:1; width:100%; min-width:0; padding:12px;
+      border:0; outline:0; background:transparent; color:var(--text);
+    }
+    .search input:focus-visible { outline:2px solid var(--gold); outline-offset:-2px; border-radius:7px; }
+    .primary-btn {
+      flex:0 0 auto; border:0; border-radius:9px; background:var(--gold);
+      color:var(--navy); padding:10px 18px; font-weight:bold;
+    }
+    .primary-btn:hover { background:#efcc89; }
+    .hero-note { min-height:24px; margin-top:10px !important; font-size:12px !important; }
+    .stats {
+      display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px;
+      margin-top:-20px; position:relative;
+    }
+    .stat {
+      background:white; text-align:center; padding:16px 8px; border-radius:12px;
+      box-shadow:0 5px 20px #102b4610; border:1px solid #edf0f5;
+    }
+    .stat strong { display:block; color:var(--blue); font-size:23px; }
+    .stat span { color:var(--muted); font-size:12px; }
+    section { padding:42px 0 5px; }
+    .section-title { margin-bottom:20px; }
+    .section-title h2 { font-size:clamp(21px,3vw,27px); color:var(--navy); }
+    .section-title p { font-size:13px; color:var(--muted); margin-top:4px; }
+    .grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:15px; }
+    .categories { grid-template-columns:repeat(4,minmax(0,1fr)); }
+    .category {
+      min-width:0; width:100%; min-height:120px; text-align:right; padding:17px;
+      border:1px solid var(--border); border-radius:12px; background:white;
+      color:var(--text); transition:transform .2s,border-color .2s,box-shadow .2s;
+    }
+    .category:hover,.category:focus-visible,.category.active {
+      border-color:var(--gold); transform:translateY(-2px); box-shadow:0 6px 18px #102b4610;
+    }
+    .emoji { display:block; font-size:27px; margin-bottom:6px; }
+    .category strong { display:block; font-size:14px; }
+    .category small { color:var(--muted); font-size:12px; }
+    .notice {
+      margin-top:20px; padding:14px; background:#fff8e9; border-right:4px solid var(--gold);
+      border-radius:8px; color:#604b2c; font-size:13px;
+    }
+    .book-card { background:white; border:1px solid var(--border); border-radius:12px; overflow:hidden; }
+    .book-top { display:flex; align-items:center; justify-content:space-between; padding:15px; background:#eaf1f8; }
+    .book-icon { font-size:27px; }
+    .book-type { color:var(--blue); font-size:12px; font-weight:bold; }
+    .book-info { padding:16px; }
+    .book-info h3 { font-size:16px; margin-bottom:6px; }
+    .book-info p { color:var(--muted); font-size:13px; margin-bottom:8px; }
+    .book-action {
+      display:block; width:100%; text-align:center; padding:10px; border-radius:8px;
+      background:var(--navy); color:white; font-size:14px;
+    }
+    .book-action:hover { background:var(--blue); }
+    .empty-state { padding:22px 15px; background:white; border:1px dashed #d5deea; border-radius:12px; color:var(--muted); font-size:13px; }
+    .about {
+      margin-top:42px; padding:38px 0; background:#eaf1f8; text-align:center;
+      border-top:1px solid var(--border);
+    }
+    .about h2 { color:var(--navy); margin-bottom:8px; font-size:24px; }
+    .about p { max-width:750px; margin:auto; color:var(--muted); font-size:14px; }
+    footer { padding:32px 0 20px; background:var(--navy); color:#d9e4ef; text-align:center; font-size:13px; }
+    .site-name,.footer-heading { color:var(--gold); }
+    .footer-card {
+      width:min(480px,100%); margin:20px auto; padding:20px;
+      border:1px solid #d9ad6270; border-radius:12px; background:#ffffff08;
+    }
+    .footer-heading { font-weight:bold; margin-top:10px; }
+    .footer-divider { height:1px; background:#ffffff25; margin:16px 0; }
+    .copyright { color:#b9c6d7; margin-top:14px; font-size:12px; }
+
+    @media (max-width:850px) {
+      .categories { grid-template-columns:repeat(2,minmax(0,1fr)); }
+      .grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+    }
+    @media (max-width:600px) {
+      .container { width:calc(100% - 24px); }
+      header { padding:12px 0; }
+      .navbar { align-items:flex-start; flex-direction:column; gap:12px; }
+      .nav-links { width:100%; display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:7px; }
+      .nav-links a { text-align:center; padding:8px 5px; font-size:12px; }
+      .hero { padding:38px 0 42px; }
+      .hero p { font-size:14px; }
+      .search { flex-direction:column; background:transparent; box-shadow:none; padding:0; }
+      .search input { min-height:48px; border-radius:10px; background:white; padding:12px 14px; }
+      .primary-btn { min-height:46px; width:100%; }
+      .stats { gap:8px; }
+      .stat { padding:13px 5px; }
+      .stat strong { font-size:20px; }
+      .stat span { font-size:11px; }
+      section { padding-top:34px; }
+      .category { padding:13px; min-height:115px; }
+      .category strong { font-size:13px; }
+      .category small { font-size:11px; }
+      .grid { gap:10px; }
+      .footer-card { padding:16px 12px; }
+    }
+    @media (max-width:360px) {
+      .categories,.grid { grid-template-columns:1fr; }
+      .nav-links { grid-template-columns:1fr; }
+      .brand h1 { font-size:14px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior:auto; }
+      *,*::before,*::after { transition:none !important; }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="container navbar">
+      <a class="brand" href="#home" aria-label="العودة للرئيسية">
+        <div class="logo" aria-hidden="true">📚</div>
+        <div>
+          <h1>مكتبة سياسة واقتصاد</h1>
+          <p>جامعة السويس</p>
+        </div>
+      </a>
+
+      <nav class="nav-links" aria-label="القائمة الرئيسية">
+        <a href="#home">الرئيسية</a>
+        <a href="#subjects">التخصصات</a>
+        <a href="#postgraduate">الدراسات العليا</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="home">
+    <section class="hero">
+      <div class="container">
+        <span class="tag">كلية السياسة والاقتصاد · جامعة السويس</span>
+
+        <h2>مكتبتك الأكاديمية في <span>مكان واحد</span></h2>
+
+        <p>
+          مكتبة إلكترونية لتنظيم الكتب والمراجع في العلوم السياسية والاقتصاد،
+          مع تقسيم مستقل لمراجع الماجستير والدكتوراه.
+        </p>
+
+        <form class="search" id="searchForm" role="search">
+          <input
+            id="searchInput"
+            type="search"
+            placeholder="ابحث عن تخصص أو قسم..."
+            aria-label="ابحث عن تخصص أو قسم"
+            autocomplete="off"
+          >
+          <button class="primary-btn" type="submit">بحث</button>
+        </form>
+
+        <p class="hero-note" id="searchStatus" aria-live="polite">
+          اختار التخصص المناسب أو ابحث باسمه
+        </p>
+      </div>
+    </section>
+
+    <div class="container">
+      <div class="stats">
+        <div class="stat">
+          <strong>2</strong>
+          <span>تخصص أكاديمي</span>
+        </div>
+        <div class="stat">
+          <strong>4</strong>
+          <span>أقسام للدراسات العليا</span>
+        </div>
+        <div class="stat">
+          <strong id="bookCount">0</strong>
+          <span>كتاب مضاف</span>
+        </div>
+      </div>
+    </div>
+
+    <section class="container" id="subjects">
+      <div class="section-title">
+        <h2>التخصصات الأكاديمية</h2>
+        <p>اختار التخصص الذي تريد استكشافه</p>
+      </div>
+
+      <div class="grid categories">
+        <button class="category" type="button" data-searchable="السياسة والعلوم السياسية">
+          <span class="emoji" aria-hidden="true">🏛️</span>
+          <strong>العلوم السياسية</strong>
+          <small>كتب ومراجع العلوم السياسية</small>
+        </button>
+
+        <button class="category" type="button" data-searchable="الاقتصاد والعلوم الاقتصادية">
+          <span class="emoji" aria-hidden="true">📈</span>
+          <strong>الاقتصاد</strong>
+          <small>كتب ومراجع العلوم الاقتصادية</small>
+        </button>
+      </div>
+    </section>
+
+    <section class="container" id="postgraduate">
+      <div class="section-title">
+        <h2>مكتبة الدراسات العليا</h2>
+        <p>أقسام مستقلة للكتب والمراجع حسب التخصص والدرجة العلمية</p>
+      </div>
+
+      <div class="grid categories">
+        <button class="category" type="button" data-field="politics" data-degree="master">
+          <span class="emoji" aria-hidden="true">🏛️</span>
+          <strong>العلوم السياسية</strong>
+          <small>كتب الماجستير</small>
+        </button>
+
+        <button class="category" type="button" data-field="politics" data-degree="phd">
+          <span class="emoji" aria-hidden="true">🎓</span>
+          <strong>العلوم السياسية</strong>
+          <small>كتب الدكتوراه</small>
+        </button>
+
+        <button class="category" type="button" data-field="economics" data-degree="master">
+          <span class="emoji" aria-hidden="true">📈</span>
+          <strong>الاقتصاد</strong>
+          <small>كتب الماجستير</small>
+        </button>
+
+        <button class="category" type="button" data-field="economics" data-degree="phd">
+          <span class="emoji" aria-hidden="true">📖</span>
+          <strong>الاقتصاد</strong>
+          <small>كتب الدكتوراه</small>
+        </button>
+      </div>
+
+      <div id="postgraduateResults" style="margin-top:22px;" aria-live="polite">
+        <div class="empty-state">
+          اختار أحد الأقسام بالأعلى لعرض الكتب والمراجع المتاحة فيه.
+        </div>
+      </div>
+    </section>
+
+    <section class="about" id="about">
+      <div class="container">
+        <h2>عن المكتبة</h2>
+        <p>
+          مكتبة إلكترونية تهدف إلى تنظيم الكتب والمراجع الأكاديمية في مجالي
+          العلوم السياسية والاقتصاد، وتسهيل الوصول إليها من الهاتف أو الكمبيوتر.
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <footer id="contact">
+    <div class="container">
+      <strong class="site-name" style="font-size:19px;">
+        مكتبة سياسة واقتصاد السويس
+      </strong>
+
+      <p>كلية السياسة والاقتصاد · جامعة السويس</p>
+
+      <div class="footer-card">
+        <h3 class="footer-heading">بيانات الموقع والإشراف</h3>
+
+        <p class="footer-heading">منشئ الموقع</p>
+        <p>مصطفى عادل</p>
+        <p>هاتف منشئ الموقع: لم يُحدد بعد</p>
+
+        <div class="footer-divider"></div>
+
+        <p class="footer-heading">تحت إشراف</p>
+        <p>الدكتور مصطفى أحمد</p>
+        <p>هاتف الدكتور: لم يُحدد بعد</p>
+      </div>
+
+      <p class="copyright">
+        © <span id="year"></span> مكتبة سياسة واقتصاد السويس
+      </p>
+    </div>
+  </footer>
+
+  <script>
+    /*
+      أضف بيانات الكتب الحقيقية هنا.
+      field: politics أو economics
+      degree: master أو phd
+      url: رابط مباشر للكتاب أو صفحة موثوقة تعرضه.
+    */
+    const postgraduateBooks = [
+      /*
+      {
+        title: "عنوان الكتاب",
+        author: "اسم المؤلف",
+        field: "politics",
+        degree: "master",
+        description: "وصف مختصر للكتاب",
+        url: "https://example.com/book.pdf"
+      }
+      */
+    ];
+
+    const fieldNames = {
+      politics: "العلوم السياسية",
+      economics: "الاقتصاد"
+    };
+
+    const degreeNames = {
+      master: "الماجستير",
+      phd: "الدكتوراه"
+    };
+
+    const searchInput = document.getElementById("searchInput");
+    const searchForm = document.getElementById("searchForm");
+    const searchStatus = document.getElementById("searchStatus");
+    const categoryButtons = [
+      ...document.querySelectorAll("[data-searchable], [data-field]")
+    ];
+    const resultsContainer = document.getElementById("postgraduateResults");
+
+    document.getElementById("year").textContent = new Date().getFullYear();
+    document.getElementById("bookCount").textContent = postgraduateBooks.length;
+
+    function filterCategories() {
+      const query = searchInput.value.trim().toLocaleLowerCase("ar");
+      let matches = 0;
+
+      categoryButtons.forEach(button => {
+        const searchableText = button.textContent.toLocaleLowerCase("ar");
+        const extraText = (button.dataset.searchable || "").toLocaleLowerCase("ar");
+        const visible = `${searchableText} ${extraText}`.includes(query);
+
+        button.hidden = !visible;
+        if (visible) matches++;
+      });
+
+      searchStatus.textContent = query
+        ? (matches > 0 ? `الأقسام المطابقة: ${matches}` : "لا توجد أقسام مطابقة")
+        : "اختار التخصص المناسب أو ابحث باسمه";
+    }
+
+    searchInput.addEventListener("input", filterCategories);
+
+    searchForm.addEventListener("submit", event => {
+      event.preventDefault();
+      filterCategories();
+
+      document.getElementById("subjects").scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      });
+    });
+
+    function makeBookCard(book, field, degree) {
+      const card = document.createElement("article");
+      card.className = "book-card";
+
+      const top = document.createElement("div");
+      top.className = "book-top";
+
+      const icon = document.createElement("span");
+      icon.className = "book-icon";
+      icon.textContent = "📚";
+
+      const type = document.createElement("span");
+      type.className = "book-type";
+      type.textContent = "مرجع أكاديمي";
+
+      top.append(icon, type);
+
+      const info = document.createElement("div");
+      info.className = "book-info";
+
+      const title = document.createElement("h3");
+      title.textContent = book.title;
+
+      const author = document.createElement("p");
+      author.textContent = `المؤلف: ${book.author || "غير محدد"}`;
+
+      const description = document.createElement("p");
+      description.textContent = book.description || "مرجع أكاديمي";
+
+      info.append(title, author, description);
+
+      if (book.url) {
+        try {
+          const url = new URL(book.url, window.location.href);
+
+          if (url.protocol === "https:" || url.protocol === "http:") {
+            const link = document.createElement("a");
+            link.className = "book-action";
+            link.href = url.href;
+            link.target = "_blank";
+            link.rel = "noopener noreferrer";
+            link.textContent = "فتح الكتاب";
+
+            info.append(link);
+          }
+        } catch (error) {
+          // تجاهل أي رابط غير صالح.
+        }
+      }
+
+      card.append(top, info);
+      return card;
+    }
+
+    function showPostgraduate(field, degree) {
+      resultsContainer.replaceChildren();
+
+      const heading = document.createElement("div");
+      heading.className = "section-title";
+
+      const title = document.createElement("h2");
+      title.textContent = `${fieldNames[field]} — كتب ${degreeNames[degree]}`;
+
+      const subtitle = document.createElement("p");
+      const books = postgraduateBooks.filter(book =>
+        book.field === field && book.degree === degree
+      );
+
+      subtitle.textContent = `عدد الكتب المضافة: ${books.length}`;
+      heading.append(title, subtitle);
+      resultsContainer.append(heading);
+
+      if (books.length === 0) {
+        const empty = document.createElement("div");
+        empty.className = "empty-state";
+        empty.textContent =
+          "لا توجد كتب مضافة في هذا القسم حاليًا. ستظهر الكتب هنا بعد إضافة بياناتها وروابطها الحقيقية.";
+        resultsContainer.append(empty);
+      } else {
+        const grid = document.createElement("div");
+        grid.className = "grid";
+
+        books.forEach(book => {
+          grid.append(makeBookCard(book, field, degree));
+        });
+
+        resultsContainer.append(grid);
+      }
+
+      resultsContainer.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      });
+    }
+
+    document.querySelectorAll("[data-field]").forEach(button => {
+      button.addEventListener("click", () => {
+        showPostgraduate(button.dataset.field, button.dataset.degree);
+      });
+    });
+  </script>
+</body>
+</html>
